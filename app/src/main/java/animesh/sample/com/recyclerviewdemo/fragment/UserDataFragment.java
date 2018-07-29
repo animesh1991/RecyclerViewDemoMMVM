@@ -14,7 +14,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
+import java.nio.file.attribute.GroupPrincipal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,7 @@ import animesh.sample.com.recyclerviewdemo.activity.MainActivity;
 import animesh.sample.com.recyclerviewdemo.adapter.UserDataListAdapter;
 import animesh.sample.com.recyclerviewdemo.interactor.RecyclerClickListener;
 import animesh.sample.com.recyclerviewdemo.model.DataList;
+import animesh.sample.com.recyclerviewdemo.model.UserListResp;
 import animesh.sample.com.recyclerviewdemo.viewmodel.UserViewModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,8 +35,14 @@ public class UserDataFragment extends BaseFragment implements RecyclerClickListe
     @BindView(R.id.recycler_client_list)
     RecyclerView recyclerListClient;
 
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
+
     private UserViewModel userViewModel;
     private OnFragmentInteractionListener mListener;
+
+    private int currentPage = 0;
+    private int totalPage = 0;
 
     public UserDataFragment() {
         // Required empty public constructor
@@ -55,7 +64,7 @@ public class UserDataFragment extends BaseFragment implements RecyclerClickListe
                              Bundle savedInstanceState) {
         setLayout(R.layout.fragment_user_list);
         return super.onCreateView(inflater, container, savedInstanceState);
-        }
+    }
 
 
     @Override
@@ -85,20 +94,71 @@ public class UserDataFragment extends BaseFragment implements RecyclerClickListe
 
     private void initData() {
         final UserDataListAdapter userDataListAdapter = new UserDataListAdapter(getActivity(), new ArrayList<DataList>(), this);
-        recyclerListClient.setLayoutManager(new LinearLayoutManager(getActivity()));
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        recyclerListClient.setLayoutManager(linearLayoutManager);
         recyclerListClient.setItemAnimator(new DefaultItemAnimator());
         recyclerListClient.setAdapter(userDataListAdapter);
         userViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
 
+/*
         userViewModel.getUserDataList().observe(getActivity(), new Observer<List<DataList>>() {
             @Override
             public void onChanged(@Nullable List<DataList> dataLists) {
                 if (null != dataLists && dataLists.size() > 0) {
                     hideProgressBar();
+                    progressBar.setVisibility(View.GONE);
                     userDataListAdapter.addItem(dataLists);
                 }
             }
         });
+*/
+
+        userViewModel.getUserAllData().observe(getActivity(), new Observer<UserListResp>() {
+            @Override
+            public void onChanged(@Nullable UserListResp userListResp) {
+                if(null != userListResp && userListResp.getData().size() > 0) {
+                    currentPage = userListResp.getPage();
+                    totalPage = userListResp.getTotalPages();
+                    hideProgressBar();
+                    progressBar.setVisibility(View.GONE);
+                    userDataListAdapter.addItem(userListResp.getData());
+                }
+            }
+        });
+
+        recyclerListClient.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+/*                visibleItemCount = linearLayoutManager.getChildCount();
+                totalItemCount = linearLayoutManager.getItemCount();
+                lastVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
+
+                if (!userViewModel.isLoading() && (totalItemCount - visibleItemCount) <= (lastVisibleItem + visibleThreshold)) {
+                    userViewModel.onLoadMore();
+                }
+
+                userViewModel.setLoading(true);*/
+
+                if (dy > 0) {
+                    if (!recyclerView.canScrollVertically(RecyclerView.FOCUS_DOWN) && currentPage < totalPage && !userViewModel.isLoading()) {
+                        progressBar.setVisibility(View.VISIBLE);
+                        userViewModel.setLoading(true);
+                        userViewModel.onLoadMore(currentPage);
+                    }
+                }
+
+            }
+        });
+
+
     }
 
     @Override

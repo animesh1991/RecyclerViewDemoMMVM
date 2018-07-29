@@ -6,22 +6,29 @@ import android.arch.lifecycle.ViewModel;
 
 import java.util.List;
 
+import animesh.sample.com.recyclerviewdemo.fragment.UserDataFragment;
+import animesh.sample.com.recyclerviewdemo.fragment.UserDetailFragment;
 import animesh.sample.com.recyclerviewdemo.interactor.NetworkInteractor;
+import animesh.sample.com.recyclerviewdemo.interactor.OnLoadMoreListener;
 import animesh.sample.com.recyclerviewdemo.model.DataList;
 import animesh.sample.com.recyclerviewdemo.model.UserListResp;
 import animesh.sample.com.recyclerviewdemo.network.UserDataRepository;
 
-public class UserViewModel extends ViewModel implements NetworkInteractor {
+public class UserViewModel extends ViewModel implements NetworkInteractor, OnLoadMoreListener {
 
     private MutableLiveData<List<DataList>> mUserDataList;
     private final MutableLiveData<DataList> mSelectUserData = new MutableLiveData<>();
+    private UserListResp userListResp;
+    private boolean isLoading;
+
+    private MutableLiveData<UserListResp> userListRespMutableLiveData;
 
     public UserViewModel() {
         UserDataRepository.registerInteractot(this);
     }
 
     public MutableLiveData<List<DataList>> getUserDataList() {
-        if(mUserDataList == null) {
+        if (mUserDataList == null) {
             mUserDataList = new MutableLiveData<>();
             UserDataRepository.getInstance().getUserList(1);
         }
@@ -29,12 +36,31 @@ public class UserViewModel extends ViewModel implements NetworkInteractor {
     }
 
 
+    public MutableLiveData<UserListResp> getUserAllData() {
+        if (userListRespMutableLiveData == null) {
+            userListRespMutableLiveData = new MutableLiveData<>();
+            UserDataRepository.getInstance().getUserList(1);
+        }
+        return userListRespMutableLiveData;
+    }
+
+
     @Override
     public void onSyncData(UserListResp userListResp) {
-        if (null != userListResp) {
+/*        if (null != userListResp) {
             mUserDataList.setValue(userListResp.getData());
-            if (userListResp.getPage() < userListResp.getTotalPages()) {
-                UserDataRepository.getInstance().getUserList(userListResp.getPage()+1);
+            setUserDataList(userListResp);
+            if (!isLoading() && userListResp.getPage() <= 1) {
+                setLoading(false);
+                UserDataRepository.getInstance().getUserList(userListResp.getPage() + 1);
+            }
+        }*/
+
+        if (null != userListResp) {
+            userListRespMutableLiveData.setValue(userListResp);
+            setLoading(false);
+            if (userListResp.getPage() <= 1) {
+                UserDataRepository.getInstance().getUserList(userListResp.getPage() + 1);
             }
         }
     }
@@ -51,5 +77,18 @@ public class UserViewModel extends ViewModel implements NetworkInteractor {
 
     public LiveData<DataList> getSelect() {
         return mSelectUserData;
+    }
+
+    @Override
+    public void onLoadMore(int currentPage) {
+        UserDataRepository.getInstance().getUserList(currentPage + 1);
+    }
+
+    public boolean isLoading() {
+        return isLoading;
+    }
+
+    public void setLoading(boolean loading) {
+        isLoading = loading;
     }
 }

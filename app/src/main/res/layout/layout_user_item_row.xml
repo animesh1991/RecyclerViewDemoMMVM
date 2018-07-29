@@ -48,8 +48,8 @@
             android:src="@mipmap/ic_launcher"
             android:layout_alignParentEnd="true"
             app:civ_border_color="@color/colorWhite"
-            android:layout_width="96dp"
-            android:layout_height="96dp" />
+            android:layout_width="72dp"
+            android:layout_height="72dp" />
 
     </RelativeLayout>
 

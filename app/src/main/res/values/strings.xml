@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RecyclerViewDemo</string>
+    <string name="app_name">PEDemo</string>
 
     <string name="lbl_list_of_users">List of Users</string>
     <string name="lbl_user_details"><b>User Details</b></string>

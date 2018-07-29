@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -20,6 +21,7 @@ import animesh.sample.com.recyclerviewdemo.R;
 import animesh.sample.com.recyclerviewdemo.fragment.UserDataFragment;
 import animesh.sample.com.recyclerviewdemo.interactor.RecyclerClickListener;
 import animesh.sample.com.recyclerviewdemo.model.DataList;
+import animesh.sample.com.recyclerviewdemo.viewmodel.UserViewModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -27,14 +29,12 @@ public class UserDataListAdapter extends RecyclerView.Adapter<UserDataListAdapte
 
     private List<DataList> mDataLists;
     private Context mContext;
-    private LayoutInflater layoutInflater;
     private RecyclerClickListener mRecyclerClickListener;
 
     public UserDataListAdapter(Context context, List<DataList> dataLists, RecyclerClickListener recyclerClickListener) {
         this.mContext = context;
         this.mDataLists = dataLists;
         this.mRecyclerClickListener = recyclerClickListener;
-        this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @NonNull
