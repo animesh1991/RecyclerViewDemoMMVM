@@ -41,9 +41,9 @@ public class UserViewModel extends ViewModel implements NetworkInteractor, OnLoa
         if (null != userListResp) {
             userListRespMutableLiveData.setValue(userListResp);
             setLoading(false);
-            if (userListResp.getPage() <= 1) {
+            /*if (userListResp.getPage() < 1) {
                 UserDataRepository.getInstance().getUserList(userListResp.getPage() + 1);
-            }
+            }*/
         }
     }
 

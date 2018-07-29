@@ -1,6 +1,5 @@
 package animesh.sample.com.recyclerviewdemo.adapter;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
@@ -9,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -18,10 +16,8 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.List;
 
 import animesh.sample.com.recyclerviewdemo.R;
-import animesh.sample.com.recyclerviewdemo.fragment.UserDataFragment;
 import animesh.sample.com.recyclerviewdemo.interactor.RecyclerClickListener;
 import animesh.sample.com.recyclerviewdemo.model.DataList;
-import animesh.sample.com.recyclerviewdemo.viewmodel.UserViewModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

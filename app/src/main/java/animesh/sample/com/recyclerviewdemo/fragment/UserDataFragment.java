@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,19 +15,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import java.nio.file.attribute.GroupPrincipal;
 import java.util.ArrayList;
-import java.util.List;
 
 import animesh.sample.com.recyclerviewdemo.R;
-import animesh.sample.com.recyclerviewdemo.activity.MainActivity;
 import animesh.sample.com.recyclerviewdemo.adapter.UserDataListAdapter;
 import animesh.sample.com.recyclerviewdemo.interactor.RecyclerClickListener;
 import animesh.sample.com.recyclerviewdemo.model.DataList;
 import animesh.sample.com.recyclerviewdemo.model.UserListResp;
 import animesh.sample.com.recyclerviewdemo.viewmodel.UserViewModel;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class UserDataFragment extends BaseFragment implements RecyclerClickListener {
 
@@ -116,7 +111,7 @@ public class UserDataFragment extends BaseFragment implements RecyclerClickListe
         userViewModel.getUserAllData().observe(getActivity(), new Observer<UserListResp>() {
             @Override
             public void onChanged(@Nullable UserListResp userListResp) {
-                if(null != userListResp && userListResp.getData().size() > 0) {
+                if (null != userListResp && userListResp.getData().size() > 0) {
                     currentPage = userListResp.getPage();
                     totalPage = userListResp.getTotalPages();
                     hideProgressBar();
@@ -137,7 +132,7 @@ public class UserDataFragment extends BaseFragment implements RecyclerClickListe
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-/*                visibleItemCount = linearLayoutManager.getChildCount();
+/*              visibleItemCount = linearLayoutManager.getChildCount();
                 totalItemCount = linearLayoutManager.getItemCount();
                 lastVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
 
@@ -154,10 +149,15 @@ public class UserDataFragment extends BaseFragment implements RecyclerClickListe
                         userViewModel.onLoadMore(currentPage);
                     }
                 }
-
+                else {
+                    if ((linearLayoutManager.findLastVisibleItemPosition() == linearLayoutManager.getItemCount() -1) && currentPage < totalPage && !userViewModel.isLoading()) {
+                        progressBar.setVisibility(View.VISIBLE);
+                        userViewModel.setLoading(true);
+                        userViewModel.onLoadMore(currentPage);
+                    }
+                }
             }
         });
-
 
     }
 

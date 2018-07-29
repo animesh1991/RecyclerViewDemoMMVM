@@ -3,9 +3,12 @@ package animesh.sample.com.recyclerviewdemo.activity;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.net.Uri;
+import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import animesh.sample.com.recyclerviewdemo.R;
 import animesh.sample.com.recyclerviewdemo.fragment.UserDataFragment;
@@ -29,7 +32,6 @@ public class MainActivity extends AppCompatActivity implements UserDataFragment.
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, UserDataFragment.newInstance()).commit();
         }
     }
-
 
     @Override
     public void onFragmentInteraction(Uri uri) {
