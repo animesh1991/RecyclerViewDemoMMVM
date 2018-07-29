@@ -27,15 +27,6 @@ public class UserViewModel extends ViewModel implements NetworkInteractor, OnLoa
         UserDataRepository.registerInteractot(this);
     }
 
-    public MutableLiveData<List<DataList>> getUserDataList() {
-        if (mUserDataList == null) {
-            mUserDataList = new MutableLiveData<>();
-            UserDataRepository.getInstance().getUserList(1);
-        }
-        return mUserDataList;
-    }
-
-
     public MutableLiveData<UserListResp> getUserAllData() {
         if (userListRespMutableLiveData == null) {
             userListRespMutableLiveData = new MutableLiveData<>();
@@ -47,15 +38,6 @@ public class UserViewModel extends ViewModel implements NetworkInteractor, OnLoa
 
     @Override
     public void onSyncData(UserListResp userListResp) {
-/*        if (null != userListResp) {
-            mUserDataList.setValue(userListResp.getData());
-            setUserDataList(userListResp);
-            if (!isLoading() && userListResp.getPage() <= 1) {
-                setLoading(false);
-                UserDataRepository.getInstance().getUserList(userListResp.getPage() + 1);
-            }
-        }*/
-
         if (null != userListResp) {
             userListRespMutableLiveData.setValue(userListResp);
             setLoading(false);
