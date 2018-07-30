@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     style="@style/fragment_root_layout_style"
-    tools:context=".fragment.UserDataFragment">
+    tools:context=".fragment.UserListFragment">
 
     <TextView
         android:id="@+id/txt_header"

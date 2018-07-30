@@ -25,7 +25,7 @@ import animesh.sample.com.recyclerviewdemo.model.UserListResp;
 import animesh.sample.com.recyclerviewdemo.viewmodel.UserViewModel;
 import butterknife.BindView;
 
-public class UserDataFragment extends BaseFragment implements RecyclerClickListener {
+public class UserListFragment extends BaseFragment implements RecyclerClickListener {
 
     @BindView(R.id.recycler_client_list)
     RecyclerView recyclerListClient;
@@ -39,12 +39,12 @@ public class UserDataFragment extends BaseFragment implements RecyclerClickListe
     private int currentPage = 0;
     private int totalPage = 0;
 
-    public UserDataFragment() {
+    public UserListFragment() {
         // Required empty public constructor
     }
 
-    public static UserDataFragment newInstance() {
-        UserDataFragment fragment = new UserDataFragment();
+    public static UserListFragment newInstance() {
+        UserListFragment fragment = new UserListFragment();
         Bundle args = new Bundle();
         return fragment;
     }

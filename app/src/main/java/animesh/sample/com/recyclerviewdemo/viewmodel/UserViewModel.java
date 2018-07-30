@@ -6,8 +6,6 @@ import android.arch.lifecycle.ViewModel;
 
 import java.util.List;
 
-import animesh.sample.com.recyclerviewdemo.fragment.UserDataFragment;
-import animesh.sample.com.recyclerviewdemo.fragment.UserDetailFragment;
 import animesh.sample.com.recyclerviewdemo.interactor.NetworkInteractor;
 import animesh.sample.com.recyclerviewdemo.interactor.OnLoadMoreListener;
 import animesh.sample.com.recyclerviewdemo.model.DataList;

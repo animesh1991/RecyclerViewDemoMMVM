@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,8 @@ import animesh.sample.com.recyclerviewdemo.viewmodel.UserViewModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+
+//Fragment displays details for the individual user
 
 public class UserDetailFragment extends BaseFragment {
 
@@ -64,7 +67,7 @@ public class UserDetailFragment extends BaseFragment {
 
     private void initData() {
         userViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
-        LiveData<DataList> dataListLiveData = userViewModel.getSelect();
+        LiveData<DataList> dataListLiveData = userViewModel.getSelect(); //get the selected user data from viewmodel object
         if (dataListLiveData != null && dataListLiveData.getValue() != null) {
             userName.setText(String.format("%s %s", dataListLiveData.getValue().getFirstName(), dataListLiveData.getValue().getLastName()));
             loadImage(dataListLiveData.getValue().getAvatar());
@@ -72,7 +75,9 @@ public class UserDetailFragment extends BaseFragment {
     }
 
     private void loadImage(String avatar) {
-        Glide.with(getActivity()).load(avatar).into(userImage);
+        if(getActivity() != null) {
+            Glide.with(getActivity()).load(avatar).into(userImage);
+        }
     }
 
 
